@@ -1,0 +1,22 @@
+export SHELL = /bin/bash
+export BUILD_HARNESS_ORG ?= russelltsherman
+export BUILD_HARNESS_PROJECT ?= build-harness
+export BUILD_HARNESS_BRANCH ?= main
+export BUILD_HARNESS_PATH ?= $(shell until [ -d "$(BUILD_HARNESS_PROJECT)" ] || [ "`pwd`" == '/' ]; do cd ..; done; pwd)/$(BUILD_HARNESS_PROJECT)
+-include $(BUILD_HARNESS_PATH)/Makefile
+
+## install build harness
+init::
+	@curl -fs --retry 5 --retry-delay 1 https://raw.githubusercontent.com/$(BUILD_HARNESS_ORG)/$(BUILD_HARNESS_PROJECT)/$(BUILD_HARNESS_BRANCH)/bin/install.sh | \
+		bash -s "$(BUILD_HARNESS_ORG)" "$(BUILD_HARNESS_PROJECT)" "$(BUILD_HARNESS_BRANCH)"
+.PHONY : init
+
+## remove build harness 
+clean-build-harness::
+	@[ "$(BUILD_HARNESS_PATH)" == '/' ] || [ "$(BUILD_HARNESS_PATH)" == '.' ] || \
+		rm -rf $(BUILD_HARNESS_PATH); rm -rf .build-harness
+.PHONY : clean-build-harness
+
+## clean and reinitialize build harness
+reset-build-harness:: clean-build-harness init
+.PHONY : reset-build-harness
