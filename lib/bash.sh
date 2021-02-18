@@ -7,5 +7,7 @@ LIBDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "${LIBDIR}/banner.sh"
 # shellcheck source=./echos.sh
 source "${LIBDIR}/echos.sh"
+# shellcheck source=./git.sh
+source "${LIBDIR}/git.sh"
 # shellcheck source=./opts.sh
 source "${LIBDIR}/opts.sh"
