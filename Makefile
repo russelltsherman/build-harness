@@ -16,6 +16,13 @@ ifeq ($(CURDIR),$(realpath $(BUILD_HARNESS_PATH)))
 export README_DEPS ?= docs/targets.md auto-label
 export DEFAULT_HELP_TARGET = help/all
 
+auto-label: MODULES=$(filter %/, $(sort $(wildcard modules/*/)))
+auto-label:
+	for module in $(MODULES); do \
+		echo "$${module%/}: $${module}**"; \
+	done > .github/$@.yml
+endif
+
 include $(BUILD_HARNESS_PATH)/Makefile.*
 include $(BUILD_HARNESS_PATH)/targets/*/bootstrap.Makefile*
 include $(BUILD_HARNESS_PATH)/targets/*/Makefile*
