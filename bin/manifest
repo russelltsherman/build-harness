@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1091
+
+################################################################################
+# find script location
+################################################################################
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# REPO_PATH specifies the location where manifest repos should be cloned
+# if this is not already set in the env we will use the local src folder
+REPO_PATH=${REPO_PATH:-$DIR/../src} 
+
+################################################################################
+# source bash libs
+################################################################################
+# shellcheck source=./../build-harness/lib/bash.sh
+source "${DIR}/../lib/bash.sh"
+
+################################################################################
+# Usage help
+################################################################################
+usage() {
+    echo "Clone or update git dependencies"
+    echo
+    echo "Syntax: $0 [subcommand] [options]"
+    echo
+    echo "subcommand:"
+    echo "  pull    clone or update manifest repos to \$REPO_PATH"
+    echo "  make    initialize manifest repos by calling their default make target"
+    echo
+    echo "options:"
+    echo "  -h      Print this Help."
+    echo
+    echo "This script reads from a local file named repo-manifest which is expected"
+    echo "to include a list of github repos written as "
+    echo "<owner>/<repo>"
+    echo "(one entry per line)."
+}
+
+################################################################################
+# validate requirements
+################################################################################
+[ -f "$DIR"/../../repo-manifest ] || ( usage && die "repo-manifest flle not found" )
+
+################################################################################
+# Process the input options. Add options as needed.                            #
+################################################################################
+case "$1" in # if first parameter matches a valid subcommand
+  make) cmd='make'; shift;;
+  pull) cmd='pull'; shift;;
+esac
+
+while getopts ":hmp" opt
+do # parse and handle option flags
+    case $opt in
+        h) usage; exit;;
+        m) cmd='make';;
+        p) cmd='pull';;
+        \?) die "Invalid option";;
+        :) die "Invalid Option: -$OPTARG requires an argument";;    
+    esac
+done
+shift $((OPTIND -1))
+
+################################################################################
+# main logic
+################################################################################
+while IFS="" read -r item || [ -n "$item" ]
+do
+    [[ "$item" == "#"* ]] && continue # ignore commented line
+    [[ "$item" == "" ]] && continue # ignore empty line
+
+    echo ""
+    echo "item: $item"
+    echo "#######################################################################"
+
+    org=$(echo "$item" | cut -d/ -f1)
+    repo=$(echo "$item" | cut -d/ -f2)
+
+    case $cmd in
+        pull)
+            git_clone_or_update "git@github.com:$org/$repo.git" "${REPO_PATH}/$repo"
+            ;;
+        make)
+            # if the project has a makefile call it's default target
+            [ -f "${REPO_PATH}/${repo}/Makefile" ] && (
+                cd "${REPO_PATH}/${repo}" && make
+            ) || echo "repo has no Makefile"
+            ;;
+        *)
+            die "$cmd is not a command i recognize"
+            ;;
+    esac
+
+done < "$DIR"/../../repo-manifest
