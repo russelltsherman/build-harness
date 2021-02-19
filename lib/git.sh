@@ -30,3 +30,36 @@ git_clone_or_update() {
     git clone --recurse-submodules "$url" "$directory" #> /dev/null 2>&1
   fi
 }
+
+# regex that covers most valid git repo formats
+# /((git|ssh|http(s)?)|(git@[\w\.]+))(:(\/\/)?)([\w\.@\:\/\-~]+)(\.git)(\/)?/gm
+
+# covered by regex
+# ssh://user@host.xz:port/path/to/repo.git/
+# ssh://user@host.xz/path/to/repo.git/
+# ssh://host.xz:port/path/to/repo.git/
+# ssh://host.xz/path/to/repo.git/
+# ssh://user@host.xz/path/to/repo.git/
+# ssh://host.xz/path/to/repo.git/
+# ssh://user@host.xz/~user/path/to/repo.git/
+# ssh://host.xz/~user/path/to/repo.git/
+# ssh://user@host.xz/~/path/to/repo.git
+# ssh://host.xz/~/path/to/repo.git
+# git://host.xz/path/to/repo.git/
+# git://host.xz/~user/path/to/repo.git/
+# http://host.xz/path/to/repo.git/
+# https://host.xz/path/to/repo.git/
+
+# not covered by regex
+# user@host.xz:/path/to/repo.git/
+# host.xz:/path/to/repo.git/
+# user@host.xz:~user/path/to/repo.git/
+# host.xz:~user/path/to/repo.git/
+# user@host.xz:path/to/repo.git
+# host.xz:path/to/repo.git
+# rsync://host.xz/path/to/repo.git/
+# /path/to/repo.git/
+# path/to/repo.git/
+# ~/path/to/repo.git
+# file:///path/to/repo.git/
+# file://~/path/to/repo.git/
