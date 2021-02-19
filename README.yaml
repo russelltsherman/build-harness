@@ -1,0 +1,96 @@
+---
+#
+# This is the canonical configuration for the `README.md`
+# Run `make readme` to rebuild the `README.md`
+#
+
+# Name of this project
+name: Build Harness
+
+# Logo for this project
+#logo: docs/logo.png
+
+# License of this project
+license: ""
+
+# Copyrights
+copyrights:
+  - name: "Blockhenge"
+    url: "https://blockhenge.com"
+    year: "2016"
+
+# Canonical GitHub repo
+github_repo: blockhenge/build-harness
+
+# Badges to display
+# badges:
+#   - name: "Build Status"
+#     image: "https://github.com/cloudposse/build-harness/workflows/docker/badge.svg?branch=master"
+#     url: "https://github.com/cloudposse/build-harness/actions?query=workflow%3Adocker"
+#   - name: "Latest Release"
+#     image: "https://img.shields.io/github/release/cloudposse/build-harness.svg"
+#     url: "https://github.com/cloudposse/build-harness/releases/latest"
+#   - name: "Slack Community"
+#     image: "https://slack.cloudposse.com/badge.svg"
+#     url: "https://slack.cloudposse.com"
+#   - name: "Discourse Forum"
+#     image: "https://img.shields.io/discourse/https/ask.sweetops.com/posts.svg"
+#     url: "https://ask.sweetops.com/"
+
+# related:
+#   - name: "Packages"
+#     description: "Blockhenge installer and distribution of native apps"
+#     url: "https://github.com/cloudposse/packages"
+#   - name: "Dev Harness"
+#     description: "Blockhenge Local Development Harness"
+#     url: "https://github.com/cloudposse/dev"
+
+# References
+references:
+  - name: "Wikipedia - Test Harness"
+    description: 'The `build-harness` is similar in concept to a "Test Harness"'
+    url: "https://en.wikipedia.org/wiki/Test_harness"
+
+# Screenshots
+# screenshots:
+#   - name: "demo"
+#     description: "Example of using the `build-harness` to build a docker image"
+#     url: "https://cdn.rawgit.com/cloudposse/build-harness/master/docs/demo.svg"
+
+# Short description of this project
+description: |-
+  This `build-harness` is a collection of Makefiles to facilitate building Golang projects, Dockerfiles, Helm charts, and more.
+
+# Introduction to the project
+#introduction: |-
+#  This is an introduction.
+
+# How to use this project
+usage: |-
+  At the top of your `Makefile` add, the following...
+
+  ```make
+  -include $(shell curl -sSL -o .build-harness "https://raw.githubusercontent.com/russelltsherman/build-harness/main/templates/Makefile.build-harness"; echo .build-harness)
+  ```
+
+  This will download a `Makefile` called `.build-harness` and include it at run-time. We recommend adding the `.build-harness` file to your `.gitignore`.
+
+  This automatically exposes many new targets that you can leverage throughout your build & CI/CD process.
+
+  Run `make help` for a list of available targets.
+
+  **NOTE:** the `/` is interchangable with the `:` in target names
+
+# # Example usage
+# examples: |-
+
+# # How to get started quickly
+# quickstart: |-
+
+# # Other files to include in this README from the project folder
+# include: []
+
+# # Contributors to this project
+# contributors:
+#   - name: "Russell Sherman"
+#     github: "russelltsherman"

@@ -1,2 +1,5 @@
+# ignore direnv vars
+.vars
+
 # ignore vendor
 vendor
