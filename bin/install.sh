@@ -1,4 +1,5 @@
 #!/bin/bash
+
 export BUILD_HARNESS_ORG=${1:-russelltsherman}
 export BUILD_HARNESS_PROJECT=${2:-build-harness}
 export BUILD_HARNESS_BRANCH=${3:-main}
@@ -10,4 +11,4 @@ if [ "$BUILD_HARNESS_PROJECT" ] && [ -d "$BUILD_HARNESS_PROJECT" ]; then
 fi
 
 echo "Cloning ${GITHUB_REPO}#${BUILD_HARNESS_BRANCH}..."
-git clone -c advice.detachedHead=false --depth=1 -b $BUILD_HARNESS_BRANCH $GITHUB_REPO
+git clone -c advice.detachedHead=false --depth=1 -b "$BUILD_HARNESS_BRANCH" "$GITHUB_REPO"
