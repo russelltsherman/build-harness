@@ -33,7 +33,7 @@ usage() {
     echo
     echo "This script reads from a local file named repo-manifest which is expected"
     echo "to include a list of github repos written as "
-    echo "<owner>/<repo>"
+    echo "git@{github|gitlab}.com:{owner}/{repo} {local}/{repo}"
     echo "(one entry per line)."
 }
 
@@ -74,17 +74,17 @@ do
     echo "item: $item"
     echo "#######################################################################"
 
-    org=$(echo "$item" | cut -d/ -f1)
-    repo=$(echo "$item" | cut -d/ -f2)
+    remote=$(echo "$item" | cut -d' ' -f1)
+    local=$(echo "$item" | cut -d' ' -f2)
 
     case $cmd in
         pull)
-            git_clone_or_update "git@github.com:$org/$repo.git" "${REPO_PATH}/$repo"
+            git_clone_or_update "$remote" "${REPO_PATH}/$local"
             ;;
         make)
             # if the project has a makefile call it's default target
-            [ -f "${REPO_PATH}/${repo}/Makefile" ] && (
-                cd "${REPO_PATH}/${repo}" && make
+            [ -f "${REPO_PATH}/${local}/Makefile" ] && (
+                cd "${REPO_PATH}/${local}" && make
             ) || echo "repo has no Makefile"
             ;;
         *)
