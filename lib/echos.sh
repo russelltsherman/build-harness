@@ -41,8 +41,10 @@ bot_confirm() {
 }
 
 die() {
-  (>&2 echo "$@")
-  exit 1
+  local -r msg="${1:-}"
+  local -r errnum="${2:-1}"
+  (>&2 error "$@")
+  exit "$errnum"
 }
 
 error() {
