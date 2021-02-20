@@ -26,8 +26,14 @@ git_clone_or_update() {
       git_update_branch "develop"
     )
   else
-    action "clone $1"
+    ref=$(echo "$url" | awk -F '?ref=' '{print $2}')
+    url=$(echo "$url" | awk -F '?ref=' '{print $1}')
+    action "clone $url"
     git clone --recurse-submodules "$url" "$directory" #> /dev/null 2>&1
+    [ "$ref" = "" ] || (
+      action "checkout $ref"
+      cd "$directory" && git checkout "$ref" || exit
+    )
   fi
 }
 

@@ -32,9 +32,12 @@ usage() {
     echo "  -h      Print this Help."
     echo
     echo "This script reads from a local file named repo-manifest which is expected"
-    echo "to include a list of github repos written as "
-    echo "git@{github|gitlab}.com:{owner}/{repo} {local}/{repo}"
-    echo "(one entry per line)."
+    echo "to include a list of github repos one repo per line as "
+    echo "{remote_repo_url} {local_repo}"
+    echo 
+    echo "a repo may reference a specific branch or tag"
+    echo "{remote_repo_url}?ref=staging {local_repo}"
+    echo "{remote_repo_url}?ref=tags/v1 {local_repo}"
 }
 
 ################################################################################
